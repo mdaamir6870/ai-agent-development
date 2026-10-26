@@ -2,6 +2,8 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os
 
+
+
 # Load configuration from the .env file
 load_dotenv()
 
@@ -24,3 +26,5 @@ response = client.chat.completions.create(
 
 # Display the response
 print(response.choices[0].message.content)
+
+
