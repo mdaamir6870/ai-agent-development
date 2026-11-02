@@ -2,7 +2,7 @@
 
 **A day-by-day practical journey to learn AI, LLMs, and AI Agent Development using Python.**
 
-Building AI applications step by step — from basic AI assistants to conversation memory, configurable personalities, Python tool integration, and document-based question answering.
+Building AI applications step by step — from basic AI assistants to conversation memory, configurable personalities, Python tool integration, document-based question answering, and RAG-based semantic retrieval.
 
 ---
 
@@ -19,7 +19,8 @@ Learn AI Agent Development through hands-on coding, understand each concept, ide
 | Day 3 | System Prompts & AI Personalities | Custom instructions and configurable behaviour | ✅ Completed |
 | Day 4 | AI Assistant with Tools | Python tools, tool manager, refactoring, SRP | ✅ Completed |
 | Day 5 | File Reading & Document Q&A | Read text files, summarize, explain, answer questions | ✅ Completed |
-| Day 6 | Coming Next | To be updated | ⏳ Upcoming |
+| Day 6 | RAG Workflow — Embeddings & Semantic Search | Knowledge base, nomic-embed-text, embeddings, cosine similarity, semantic retrieval | ✅ Completed |
+| Day 7 | Coming Next | To be updated | ⏳ Upcoming |
 
 ---
 
@@ -86,15 +87,31 @@ Learn AI Agent Development through hands-on coding, understand each concept, ide
 
 [📂 Explore Day 5 →](./Day-5/README.md)
 
+### Day 6 — RAG Workflow: Embeddings & Semantic Search
+
+- Created a local knowledge base using `.txt` documents.
+- Loaded documents from the `knowledge/` folder using `pathlib`.
+- Used the **`nomic-embed-text`** embedding model to convert documents into numerical vectors.
+- Generated embeddings for user questions.
+- Learned how embeddings represent semantic meaning in numerical form.
+- Implemented cosine similarity using NumPy to compare question and document vectors.
+- Retrieved the document with the highest similarity score.
+- Combined retrieved document content and user question into a prompt.
+- Sent the context-based prompt to the LLM to generate an answer.
+
+**Limitation:** Documents are embedded as complete files without chunking. Embeddings are stored in memory rather than a vector database. Only the highest-scoring document is selected, and no minimum similarity threshold is implemented.
+
+[📂 Explore Day 6 →](./Day-6/README.md)
+
 ---
 
 ## 🚀 Project Evolution — Interactive Roadmap
 
-**From basic AI responses to document-aware, tool-enabled assistants.**
+**From basic AI responses to document-aware, tool-enabled assistants with semantic retrieval.**
 
 Follow the development journey and select a completed stage to explore its learning notes.
 
-```mermaid id="r8v4k2"
+```mermaid
 flowchart LR
     START(["🚀 AI Agent<br/>Development"])
     D1["DAY 1<br/>Basic AI Assistant"]
@@ -102,16 +119,18 @@ flowchart LR
     D3["DAY 3<br/>AI Personalities"]
     D4["DAY 4<br/>Python Tools & SRP"]
     D5["DAY 5<br/>Document Q&A"]
-    NEXT["DAY 6<br/>Coming Next"]
+    D6["DAY 6<br/>RAG & Semantic Search"]
+    NEXT["DAY 7<br/>Coming Next"]
     GOAL(["🎯 Advanced<br/>AI Agents"])
 
-    START --> D1 --> D2 --> D3 --> D4 --> D5 --> NEXT --> GOAL
+    START --> D1 --> D2 --> D3 --> D4 --> D5 --> D6 --> NEXT --> GOAL
 
     click D1 "./Day-1/README.md" "Explore Day 1"
     click D2 "./Day-2/README.md" "Explore Day 2"
     click D3 "./Day-3/README.md" "Explore Day 3"
     click D4 "./Day-4/README.md" "Explore Day 4"
     click D5 "./Day-5/README.md" "Explore Day 5"
+    click D6 "./Day-6/README.md" "Explore Day 6"
 
     classDef start fill:#172554,stroke:#60a5fa,color:#ffffff,stroke-width:2px
     classDef completed fill:#dcfce7,stroke:#16a34a,color:#14532d,stroke-width:2px
@@ -119,7 +138,7 @@ flowchart LR
     classDef future fill:#dbeafe,stroke:#2563eb,color:#1e3a8a,stroke-width:2px
 
     class START start
-    class D1,D2,D3,D4,D5 completed
+    class D1,D2,D3,D4,D5,D6 completed
     class NEXT upcoming
     class GOAL future
 ```
@@ -133,6 +152,7 @@ flowchart LR
 | Day 3 | Configurable Behaviour | Customize responses using system prompts |
 | Day 4 | Python Tool Integration | Execute predefined functions using keyword-based routing |
 | Day 5 | Document Q&A | Read text files and answer document-based questions |
+| Day 6 | RAG & Semantic Search | Retrieve relevant documents using embeddings and cosine similarity |
 | Future | Advanced AI Agents | Progress toward AI-driven tool selection, planning, and task execution |
 
 ---
@@ -142,15 +162,18 @@ flowchart LR
 - **Language:** Python
 - **AI Integration:** OpenAI-compatible API
 - **Configuration:** `python-dotenv` and environment variables
-- **Core Concepts:** Lists, dictionaries, loops, f-strings, functions, system prompts, conversation history, file handling, prompt construction
-- **Architecture:** Tool management, modular programming, refactoring, Single Responsibility Principle (SRP)
-- **Testing:** Python test scripts for tools and file reading
+- **Embedding Model:** `nomic-embed-text`
+- **AI Runtime:** Ollama
+- **Core Concepts:** Lists, dictionaries, loops, functions, system prompts, conversation history, file handling, embeddings, semantic meaning, cosine similarity, semantic search
+- **Architecture:** Tool management, modular programming, refactoring, Single Responsibility Principle (SRP), basic RAG workflow
+- **Libraries:** NumPy, pathlib
+- **Testing:** Python test scripts for tools, file reading, embeddings, and retrieval
 - **Tools:** Visual Studio Code, Git, and GitHub
 - **Documentation:** Markdown and Mermaid
 
 ## 📁 Repository Structure
 
-```text id="t6z3b1"
+```text
 AI-AGENT-DEVELOPMENT/
 ├── Day-1/
 │   ├── assistant.py
@@ -175,11 +198,20 @@ AI-AGENT-DEVELOPMENT/
 │   ├── tool_manager.py
 │   ├── test_file_tool.py
 │   └── README.md
+├── Day-6/
+│   ├── knowledge/
+│   │   └── *.txt
+│   ├── rag.py
+│   ├── retriever.py
+│   ├── similarity.py
+│   ├── test_embedding.py
+│   ├── test_retriever.py
+│   └── README.md
 ├── .gitignore
 └── README.md
 ```
 
-*Keep this structure aligned with the files actually present in the repository.*
+*Keep this structure aligned with the files actually present in the repository. Do not commit `.env` files.*
 
 ---
 
@@ -199,6 +231,8 @@ AI-AGENT-DEVELOPMENT/
 - Conversation memory currently lasts only for the active session.
 - Day 4 tool execution is based on keyword matching.
 - Day 5 document processing currently supports local text files only.
+- Day 6 uses document embeddings and cosine similarity for basic semantic retrieval.
+- Day 6 embeddings are stored in memory; no persistent vector database is integrated.
 - Never upload `.env` files or API keys to GitHub.
 
 ---
