@@ -2,7 +2,7 @@
 
 **A day-by-day practical journey to learn AI, LLMs, and AI Agent Development using Python.**
 
-Building AI applications step by step — from basic AI assistants to conversation memory, configurable personalities, Python tool integration, document-based question answering, and RAG-based semantic retrieval.
+Building AI applications step by step — from basic AI assistants to conversation memory, configurable personalities, Python tool integration, document-based question answering, RAG, and LLM-based planning.
 
 ---
 
@@ -19,8 +19,9 @@ Learn AI Agent Development through hands-on coding, understand each concept, ide
 | Day 3 | System Prompts & AI Personalities | Custom instructions and configurable behaviour | ✅ Completed |
 | Day 4 | AI Assistant with Tools | Python tools, tool manager, refactoring, SRP | ✅ Completed |
 | Day 5 | File Reading & Document Q&A | Read text files, summarize, explain, answer questions | ✅ Completed |
-| Day 6 | RAG Workflow — Embeddings & Semantic Search | Knowledge base, nomic-embed-text, embeddings, cosine similarity, semantic retrieval | ✅ Completed |
-| Day 7 | Coming Next | To be updated | ⏳ Upcoming |
+| Day 6 | RAG Workflow — Embeddings & Semantic Search | Knowledge base, nomic-embed-text, embeddings, cosine similarity | ✅ Completed |
+| Day 7 | AI Planner & Tool Execution | LLM-based planning, intelligent tool selection, Python execution | ✅ Completed |
+| Day 8 | Coming Next | To be updated | ⏳ Upcoming |
 
 ---
 
@@ -103,11 +104,27 @@ Learn AI Agent Development through hands-on coding, understand each concept, ide
 
 [📂 Explore Day 6 →](./Day-6/README.md)
 
+### Day 7 — AI Planner & Tool Execution
+
+- Created `planner.py` to make tool-selection decisions using an LLM.
+- Used an AI planner to understand user requests and select appropriate tools.
+- Created `test_planner.py` to test different user requests.
+- Connected the planner with the main AI assistant.
+- Integrated Python tool execution based on planner decisions.
+- Executed tools for current time, dice rolling, and password generation.
+- Passed tool results back to the LLM through prompt construction.
+- Generated natural-language responses using tool outputs.
+- Learned the difference between keyword-based routing and LLM-based planning.
+
+**Limitation:** Planner decisions use plain-text tool names rather than native function calling. Voice/audio output and persistent conversation memory are not implemented.
+
+[📂 Explore Day 7 →](./Day-7/README.md)
+
 ---
 
 ## 🚀 Project Evolution — Interactive Roadmap
 
-**From basic AI responses to document-aware, tool-enabled assistants with semantic retrieval.**
+**From basic AI responses to intelligent, document-aware and tool-enabled AI assistants.**
 
 Follow the development journey and select a completed stage to explore its learning notes.
 
@@ -120,10 +137,11 @@ flowchart LR
     D4["DAY 4<br/>Python Tools & SRP"]
     D5["DAY 5<br/>Document Q&A"]
     D6["DAY 6<br/>RAG & Semantic Search"]
-    NEXT["DAY 7<br/>Coming Next"]
+    D7["DAY 7<br/>AI Planner & Execution"]
+    NEXT["DAY 8<br/>Coming Next"]
     GOAL(["🎯 Advanced<br/>AI Agents"])
 
-    START --> D1 --> D2 --> D3 --> D4 --> D5 --> D6 --> NEXT --> GOAL
+    START --> D1 --> D2 --> D3 --> D4 --> D5 --> D6 --> D7 --> NEXT --> GOAL
 
     click D1 "./Day-1/README.md" "Explore Day 1"
     click D2 "./Day-2/README.md" "Explore Day 2"
@@ -131,6 +149,7 @@ flowchart LR
     click D4 "./Day-4/README.md" "Explore Day 4"
     click D5 "./Day-5/README.md" "Explore Day 5"
     click D6 "./Day-6/README.md" "Explore Day 6"
+    click D7 "./Day-7/README.md" "Explore Day 7"
 
     classDef start fill:#172554,stroke:#60a5fa,color:#ffffff,stroke-width:2px
     classDef completed fill:#dcfce7,stroke:#16a34a,color:#14532d,stroke-width:2px
@@ -138,7 +157,7 @@ flowchart LR
     classDef future fill:#dbeafe,stroke:#2563eb,color:#1e3a8a,stroke-width:2px
 
     class START start
-    class D1,D2,D3,D4,D5,D6 completed
+    class D1,D2,D3,D4,D5,D6,D7 completed
     class NEXT upcoming
     class GOAL future
 ```
@@ -153,7 +172,8 @@ flowchart LR
 | Day 4 | Python Tool Integration | Execute predefined functions using keyword-based routing |
 | Day 5 | Document Q&A | Read text files and answer document-based questions |
 | Day 6 | RAG & Semantic Search | Retrieve relevant documents using embeddings and cosine similarity |
-| Future | Advanced AI Agents | Progress toward AI-driven tool selection, planning, and task execution |
+| Day 7 | AI Planner & Tool Execution | Use an LLM to select tools and execute Python functions |
+| Future | Advanced AI Agents | Progress toward AI-driven tool calling, planning, memory, and task execution |
 
 ---
 
@@ -164,10 +184,11 @@ flowchart LR
 - **Configuration:** `python-dotenv` and environment variables
 - **Embedding Model:** `nomic-embed-text`
 - **AI Runtime:** Ollama
-- **Core Concepts:** Lists, dictionaries, loops, functions, system prompts, conversation history, file handling, embeddings, semantic meaning, cosine similarity, semantic search
-- **Architecture:** Tool management, modular programming, refactoring, Single Responsibility Principle (SRP), basic RAG workflow
+- **LLM Model:** Qwen3:1.7b
+- **Core Concepts:** Lists, dictionaries, loops, functions, system prompts, conversation history, file handling, embeddings, semantic meaning, cosine similarity, semantic search, AI planning, tool execution
+- **Architecture:** Tool management, modular programming, refactoring, Single Responsibility Principle (SRP), basic RAG workflow, LLM-based planning
 - **Libraries:** NumPy, pathlib
-- **Testing:** Python test scripts for tools, file reading, embeddings, and retrieval
+- **Testing:** Python test scripts for tools, file reading, embeddings, retrieval, and planner decisions
 - **Tools:** Visual Studio Code, Git, and GitHub
 - **Documentation:** Markdown and Mermaid
 
@@ -207,6 +228,12 @@ AI-AGENT-DEVELOPMENT/
 │   ├── test_embedding.py
 │   ├── test_retriever.py
 │   └── README.md
+├── Day-7/
+│   ├── assistant.py
+│   ├── planner.py
+│   ├── test_planner.py
+│   ├── tools.py
+│   └── README.md
 ├── .gitignore
 └── README.md
 ```
@@ -233,6 +260,8 @@ AI-AGENT-DEVELOPMENT/
 - Day 5 document processing currently supports local text files only.
 - Day 6 uses document embeddings and cosine similarity for basic semantic retrieval.
 - Day 6 embeddings are stored in memory; no persistent vector database is integrated.
+- Day 7 uses an LLM-based planner that returns tool names for Python execution.
+- Day 7 does not yet implement native function calling or actual voice/audio output.
 - Never upload `.env` files or API keys to GitHub.
 
 ---
