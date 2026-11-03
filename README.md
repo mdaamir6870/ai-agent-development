@@ -2,7 +2,7 @@
 
 **A day-by-day practical journey to learn AI, LLMs, and AI Agent Development using Python.**
 
-Building AI applications step by step — from basic AI assistants to conversation memory, configurable personalities, Python tool integration, document-based question answering, RAG, and LLM-based planning.
+Building AI applications step by step — from basic AI assistants to conversation memory, configurable personalities, Python tool integration, document-based question answering, RAG, LLM-based planning, and MCP integration.
 
 ---
 
@@ -21,7 +21,8 @@ Learn AI Agent Development through hands-on coding, understand each concept, ide
 | Day 5 | File Reading & Document Q&A | Read text files, summarize, explain, answer questions | ✅ Completed |
 | Day 6 | RAG Workflow — Embeddings & Semantic Search | Knowledge base, nomic-embed-text, embeddings, cosine similarity | ✅ Completed |
 | Day 7 | AI Planner & Tool Execution | LLM-based planning, intelligent tool selection, Python execution | ✅ Completed |
-| Day 8 | Coming Next | To be updated | ⏳ Upcoming |
+| Day 8 | MCP Integration | MCP Client, Server, tool discovery and execution | ✅ Completed |
+| Day 9 | Coming Next | To be updated | ⏳ Upcoming |
 
 ---
 
@@ -120,6 +121,30 @@ Learn AI Agent Development through hands-on coding, understand each concept, ide
 
 [📂 Explore Day 7 →](./Day-7/README.md)
 
+### Day 8 — MCP (Model Context Protocol) Integration
+
+- Learned the fundamentals of Model Context Protocol (MCP).
+- Understood MCP Host, Client, and Server architecture.
+- Created an MCP Server using **FastMCP**.
+- Registered Python functions as MCP tools using `@mcp.tool()`.
+- Created an MCP Client using `fastmcp.Client`.
+- Implemented server connection and disconnection.
+- Discovered available tools dynamically using `list_tools()`.
+- Executed tools through `call_tool()`.
+- Connected the MCP workflow with an LLM-based planner.
+- Used `async` and `await` for asynchronous operations.
+- Managed asynchronous execution using `asyncio.run()`.
+- Implemented and tested three MCP tools:
+  - `current_time()` — Returns the current date and time.
+  - `roll_dice()` — Generates a random number from 1 to 6.
+  - `generate_password()` — Generates a random password.
+
+**Architecture:** The AI assistant discovers tools from an MCP Server, selects a tool using the LLM planner, executes it through the MCP Client, and passes the result back to the LLM for a natural-language response.
+
+**Limitation:** Tool selection uses plain-text tool names rather than native structured function calling. The planner does not generate tool arguments. Tool-name validation, persistent memory, multi-request sessions, MCP Resources, and MCP Prompts are not implemented.
+
+[📂 Explore Day 8 →](./Day-8/README.md)
+
 ---
 
 ## 🚀 Project Evolution — Interactive Roadmap
@@ -138,10 +163,11 @@ flowchart LR
     D5["DAY 5<br/>Document Q&A"]
     D6["DAY 6<br/>RAG & Semantic Search"]
     D7["DAY 7<br/>AI Planner & Execution"]
-    NEXT["DAY 8<br/>Coming Next"]
+    D8["DAY 8<br/>MCP Integration"]
+    NEXT["DAY 9<br/>Coming Next"]
     GOAL(["🎯 Advanced<br/>AI Agents"])
 
-    START --> D1 --> D2 --> D3 --> D4 --> D5 --> D6 --> D7 --> NEXT --> GOAL
+    START --> D1 --> D2 --> D3 --> D4 --> D5 --> D6 --> D7 --> D8 --> NEXT --> GOAL
 
     click D1 "./Day-1/README.md" "Explore Day 1"
     click D2 "./Day-2/README.md" "Explore Day 2"
@@ -150,6 +176,7 @@ flowchart LR
     click D5 "./Day-5/README.md" "Explore Day 5"
     click D6 "./Day-6/README.md" "Explore Day 6"
     click D7 "./Day-7/README.md" "Explore Day 7"
+    click D8 "./Day-8/README.md" "Explore Day 8"
 
     classDef start fill:#172554,stroke:#60a5fa,color:#ffffff,stroke-width:2px
     classDef completed fill:#dcfce7,stroke:#16a34a,color:#14532d,stroke-width:2px
@@ -157,7 +184,7 @@ flowchart LR
     classDef future fill:#dbeafe,stroke:#2563eb,color:#1e3a8a,stroke-width:2px
 
     class START start
-    class D1,D2,D3,D4,D5,D6,D7 completed
+    class D1,D2,D3,D4,D5,D6,D7,D8 completed
     class NEXT upcoming
     class GOAL future
 ```
@@ -173,7 +200,8 @@ flowchart LR
 | Day 5 | Document Q&A | Read text files and answer document-based questions |
 | Day 6 | RAG & Semantic Search | Retrieve relevant documents using embeddings and cosine similarity |
 | Day 7 | AI Planner & Tool Execution | Use an LLM to select tools and execute Python functions |
-| Future | Advanced AI Agents | Progress toward AI-driven tool calling, planning, memory, and task execution |
+| Day 8 | MCP Integration | Discover and execute external tools through an MCP Client-Server architecture |
+| Future | Advanced AI Agents | Progress toward structured tool calling, planning, memory, and task execution |
 
 ---
 
@@ -185,27 +213,36 @@ flowchart LR
 - **Embedding Model:** `nomic-embed-text`
 - **AI Runtime:** Ollama
 - **LLM Model:** Qwen3:1.7b
-- **Core Concepts:** Lists, dictionaries, loops, functions, system prompts, conversation history, file handling, embeddings, semantic meaning, cosine similarity, semantic search, AI planning, tool execution
-- **Architecture:** Tool management, modular programming, refactoring, Single Responsibility Principle (SRP), basic RAG workflow, LLM-based planning
+- **MCP Framework:** FastMCP
+- **Communication Protocol:** Model Context Protocol (MCP)
+- **Asynchronous Programming:** `async`, `await`, `asyncio`
+- **Core Concepts:** Lists, dictionaries, loops, functions, system prompts, conversation history, file handling, embeddings, semantic search, AI planning, tool execution, MCP architecture
+- **Architecture:** Tool management, modular programming, refactoring, Single Responsibility Principle (SRP), basic RAG workflow, LLM-based planning, MCP Client-Server architecture
 - **Libraries:** NumPy, pathlib
-- **Testing:** Python test scripts for tools, file reading, embeddings, retrieval, and planner decisions
+- **Testing:** Python test scripts for tools, file reading, embeddings, retrieval, planner decisions, and MCP client operations
 - **Tools:** Visual Studio Code, Git, and GitHub
 - **Documentation:** Markdown and Mermaid
+
+---
 
 ## 📁 Repository Structure
 
 ```text
 AI-AGENT-DEVELOPMENT/
+│
 ├── Day-1/
 │   ├── assistant.py
 │   ├── hello_ai.py
 │   └── README.md
+│
 ├── Day-2/
 │   ├── assistant.py
 │   └── README.md
+│
 ├── Day-3/
 │   ├── assistant.py
 │   └── README.md
+│
 ├── Day-4/
 │   ├── assistant.py
 │   ├── tools.py
@@ -213,12 +250,14 @@ AI-AGENT-DEVELOPMENT/
 │   ├── test_tools.py
 │   ├── test_tool_manager.py
 │   └── README.md
+│
 ├── Day-5/
 │   ├── assistant.py
 │   ├── tools.py
 │   ├── tool_manager.py
 │   ├── test_file_tool.py
 │   └── README.md
+│
 ├── Day-6/
 │   ├── knowledge/
 │   │   └── *.txt
@@ -228,12 +267,21 @@ AI-AGENT-DEVELOPMENT/
 │   ├── test_embedding.py
 │   ├── test_retriever.py
 │   └── README.md
+│
 ├── Day-7/
 │   ├── assistant.py
 │   ├── planner.py
 │   ├── test_planner.py
 │   ├── tools.py
 │   └── README.md
+│
+├── Day-8/
+│   ├── agent.py
+│   ├── mcp_client.py
+│   ├── server.py
+│   ├── test_client.py
+│   └── README.md
+│
 ├── .gitignore
 └── README.md
 ```
@@ -262,6 +310,10 @@ AI-AGENT-DEVELOPMENT/
 - Day 6 embeddings are stored in memory; no persistent vector database is integrated.
 - Day 7 uses an LLM-based planner that returns tool names for Python execution.
 - Day 7 does not yet implement native function calling or actual voice/audio output.
+- Day 8 uses FastMCP to expose Python functions through an MCP Server.
+- Day 8 uses an MCP Client for tool discovery and execution.
+- Day 8 planner returns plain-text tool names and does not generate tool arguments.
+- Day 8 does not yet implement MCP Resources, MCP Prompts, or persistent memory.
 - Never upload `.env` files or API keys to GitHub.
 
 ---
